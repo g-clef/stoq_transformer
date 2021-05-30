@@ -1,4 +1,5 @@
 import asyncio
+import json
 import os
 
 from stoq import Stoq, RequestMeta
@@ -9,37 +10,40 @@ def make_stoq(input_path):
     es_password = os.environ.get("ES_PASSWORD", "password")
     es_host = os.environ.get("ES_HOST", "es")
     es_index = os.environ.get("ES_INDEX", "malwarETL")
-    providers = ['dirmon']
-    dispatcher = ['decompress']
-    workers = ['EMBER_format_lief',
-               "entropy",
-               'exif',
-               'hash',
-               "hash_ssdeep",
-               'lief',
-               "mimetype",
-               "mraptor",
-               "ole",
-               "peinfo",
-               "rtf",
-               "symhash",
-               "xdpcarve",
-               "xyz"
-               ]
-    connectors = ['es']
-    plugin_opts = {'dirmon': {"source_dir": input_path},
-                   "decompress": {'passwords': "infected"},
-                   "es": {"es_options": {"http_auth": (es_username, es_password)},
-                          "es_host": es_host,
-                          "es_index": es_index
-                          }
+    stoq_home = os.environ.get("STOQ_HOME", "/app")
+    plugin_home = os.path.join(stoq_home, "plugins")
+    providers = ["dirmon"]
+    workers = ["decompress"]
+    always_dispatch = ",".join(["EMBER_format_lief",
+                                "entropy",
+                                "hash",
+                                "hash_ssdeep",
+                                "lief",
+                                "mimetype",
+                                "mraptor",
+                                "ole",
+                                "peinfo",
+                                "rtf",
+                                "symhash",
+                                "xdpcarve",
+                                "xyz"]
+                               )
+    # connectors = ['es-search']
+    connectors = ['stdout']
+    plugin_opts = {"dirmon": {"source_dir": input_path},
+                   "decompress": {'passwords': "infected",
+                                  "always_dispatch": always_dispatch},
+                   "es-search": {"es_options": json.dumps({"http_auth": [es_username, es_password]}),
+                                 "es_host": es_host,
+                                 "es_index": es_index
+                                }
                    }
     s = Stoq(
+            plugin_dir_list=[plugin_home],
             providers=providers,
             connectors=connectors,
-            dispatchers=dispatcher,
             always_dispatch=workers,
-            plugin_opts=plugin_opts
+            plugin_opts=plugin_opts,
     )
     return s
 

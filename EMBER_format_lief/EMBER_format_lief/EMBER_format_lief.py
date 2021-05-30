@@ -27,7 +27,7 @@ class LiefPlugin(WorkerPlugin):
         )
 
         try:
-            lief_obj = lief.parse(raw=payload.content, name=filename)
+            lief_obj = lief.parse(raw=list(payload.content), name=filename)
         except lief.exception as err:
             raise StoqPluginException(f'Unable to parse payload: {err}')
 
