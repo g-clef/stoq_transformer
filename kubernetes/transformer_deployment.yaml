@@ -1,0 +1,56 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: stoq-transformer
+  labels:
+    app: stoq-transformer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stoq-transformer
+  template:
+    metadata:
+      labels:
+        app: stoq-transformer
+    spec:
+      volumes:
+        - name: malware
+          nfs:
+            server: 192.168.1.29
+            path: /mnt/DroboFS/Shares/malwarETL
+      containers:
+        - name: stoq-transformer
+          image: gclef/stoq-transformer:0.1
+          imagePullPolicy: "IfNotPresent"
+          resources:
+            limits:
+              memory: "3Gi"
+            requests:
+              memory: "1Gi"
+          volumeMounts:
+            - name: malware
+              mountPath: /malware
+          env:
+            - name: ES_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: stoq-transformer-secrets
+                  key: ES_USERNAME
+            - name: ES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: stoq-transformer-secrets
+                  key: ES_PASSWORD
+            - name: ES_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: stoq-transformer-secrets
+                  key: ES_HOST
+            - name: TRANSFORMERS
+              valueFrom:
+                secretKeyRef:
+                  name: stoq-transformer-secrets
+                  key: TRANSFORMERS
+      imagePullSecrets:
+        - name: registrycreds
