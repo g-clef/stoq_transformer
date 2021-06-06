@@ -22,7 +22,7 @@ RUN stoq install EMBER_format_lief
 RUN stoq install --github stoq:entropy
 RUN stoq install --github stoq:hash
 RUN stoq install --github stoq:hash_ssdeep
-RUN stoq install --github stoq:lief
+RUN stoq install --github lief
 RUN stoq install --github stoq:mimetype
 RUN stoq install --github stoq:mraptor
 RUN stoq install --github stoq:ole
