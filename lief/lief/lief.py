@@ -22,6 +22,7 @@ Parse and abstract PE, ELF and MachO files using LIEF
 
 import json
 import lief
+from typing import Dict, Optional
 
 from stoq.helpers import StoqConfigParser
 from stoq.plugins import WorkerPlugin
