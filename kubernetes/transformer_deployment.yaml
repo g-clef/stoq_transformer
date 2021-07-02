@@ -17,7 +17,7 @@ spec:
       volumes:
         - name: malware
           persistentVolumeClaim:
-            claimName: raw-malware-pvc
+            claimName: stoq-raw-malware-pvc
       containers:
         - name: stoq-transformer
           image: gclef/stoq-transformer:0.1
@@ -26,10 +26,11 @@ spec:
             limits:
               memory: "3Gi"
             requests:
-              memory: "1Gi"
+              memory: "2Gi"
           volumeMounts:
             - name: malware
               mountPath: /malware
+              readOnly: True
           env:
             - name: ES_USERNAME
               valueFrom:
