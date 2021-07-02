@@ -18,7 +18,8 @@ def make_stoq_user():
                  }
     response = requests.post(f"https://malwaretl-cluster-es-http.es:9200/_security/user/{username}",
                              data=post_data,
-                             auth=(elastic_user, elastic_pass))
+                             auth=(elastic_user, elastic_pass),
+                             verify=False)
     if response.status_code not in (200, 201):
         raise Exception(f"problem with user creation: {response.json()}")
 
