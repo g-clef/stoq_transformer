@@ -33,5 +33,6 @@ spec:
                 secretKeyRef:
                   name: malwaretl-cluster-es-elastic-user
                   key: elastic
+                  namespace: es
       imagePullSecrets:
         - name: registrycreds
