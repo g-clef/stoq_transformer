@@ -33,9 +33,13 @@ def make_stoq(input_path):
     plugin_opts = {"dirmon": {"source_dir": input_path},
                    "decompress": {'passwords': "infected",
                                   "always_dispatch": always_dispatch},
-                   "es-search": {"es_options": json.dumps({"http_auth": [es_username, es_password]}),
+                   "es-search": {"es_options": json.dumps({"http_auth": [es_username, es_password],
+                                                           "verify_certs": False,
+                                                           "use_ssl": True,
+                                                           "port": 9200}),
                                  "es_host": es_host,
-                                 "es_index": es_index
+                                 "es_index": es_index,
+                                 "index_by_month": True
                                 }
                    }
     s = Stoq(
