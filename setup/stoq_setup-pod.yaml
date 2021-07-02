@@ -8,7 +8,7 @@ spec:
       restartPolicy: OnFailure
       containers:
         - name: stoq-setup-container
-          image: gclef/stoq-setup:1.2
+          image: gclef/stoq-setup:1.3
           imagePullPolicy: "IfNotPresent"
           resources:
             limits:
