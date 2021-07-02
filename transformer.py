@@ -28,8 +28,8 @@ def make_stoq(input_path):
                                 "xdpcarve",
                                 "xyz"]
                                )
-    # connectors = ['es-search']
-    connectors = ['stdout']
+    connectors = ['es-search']
+    # connectors = ['stdout']
     plugin_opts = {"dirmon": {"source_dir": input_path},
                    "decompress": {'passwords': "infected",
                                   "always_dispatch": always_dispatch},
