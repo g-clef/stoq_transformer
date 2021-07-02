@@ -28,14 +28,18 @@ def make_stoq(input_path):
                                 "xdpcarve",
                                 "xyz"]
                                )
-    # connectors = ['es-search']
-    connectors = ['stdout']
+    connectors = ['es-search']
+    # connectors = ['stdout']
     plugin_opts = {"dirmon": {"source_dir": input_path},
                    "decompress": {'passwords': "infected",
                                   "always_dispatch": always_dispatch},
-                   "es-search": {"es_options": json.dumps({"http_auth": [es_username, es_password]}),
+                   "es-search": {"es_options": json.dumps({"http_auth": [es_username, es_password],
+                                                           "verify_certs": False,
+                                                           "use_ssl": True,
+                                                           "port": 9200}),
                                  "es_host": es_host,
-                                 "es_index": es_index
+                                 "es_index": es_index,
+                                 "index_by_month": True
                                 }
                    }
     s = Stoq(
@@ -49,7 +53,7 @@ def make_stoq(input_path):
 
 
 def init_github_android():
-    input_path = os.environ.get("GITHUB_ANDROID_PATH", "/malware/github-android/")
+    input_path = os.environ.get("GITHUB_ANDROID_PATH", "/malware/github-android-malware/")
     s = make_stoq(input_path)
     meta = RequestMeta(source="github-android-malware",
                        extra_data={"target": "android", "malicious": "true"}

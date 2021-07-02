@@ -29,6 +29,7 @@ RUN stoq install --github stoq:mraptor
 RUN stoq install --github stoq:ole
 RUN stoq install --github stoq:peinfo
 RUN stoq install --github stoq:rtf
+RUN stoq install --github stoq:stdout
 RUN stoq install --github stoq:symhash
 RUN stoq install --github stoq:xdpcarve
 RUN stoq install --github stoq:xyz
