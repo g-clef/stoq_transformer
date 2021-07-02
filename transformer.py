@@ -9,7 +9,7 @@ def make_stoq(input_path):
     es_username = os.environ.get("ES_USERNAME", "es")
     es_password = os.environ.get("ES_PASSWORD", "password")
     es_host = os.environ.get("ES_HOST", "es")
-    es_index = os.environ.get("ES_INDEX", "malwarETL")
+    es_index = os.environ.get("ES_INDEX", "malwaretl")
     stoq_home = os.environ.get("STOQ_HOME", "/app")
     plugin_home = os.path.join(stoq_home, "plugins")
     providers = ["dirmon"]
