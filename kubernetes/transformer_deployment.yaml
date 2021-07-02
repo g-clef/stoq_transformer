@@ -20,7 +20,7 @@ spec:
             claimName: stoq-raw-malware-pvc
       containers:
         - name: stoq-transformer
-          image: gclef/stoq-transformer:0.1
+          image: gclef/stoq-transformer:0.2
           imagePullPolicy: "IfNotPresent"
           resources:
             limits:

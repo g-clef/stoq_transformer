@@ -53,7 +53,7 @@ def make_stoq(input_path):
 
 
 def init_github_android():
-    input_path = os.environ.get("GITHUB_ANDROID_PATH", "/malware/github-android/")
+    input_path = os.environ.get("GITHUB_ANDROID_PATH", "/malware/github-android-malware/")
     s = make_stoq(input_path)
     meta = RequestMeta(source="github-android-malware",
                        extra_data={"target": "android", "malicious": "true"}
