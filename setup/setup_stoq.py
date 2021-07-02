@@ -17,7 +17,7 @@ def make_stoq_user():
                  "roles": "superuser"
                  }
     response = requests.post(f"https://malwaretl-cluster-es-http.es:9200/_security/user/{username}",
-                             data=post_data,
+                             json=post_data,
                              auth=(elastic_user, elastic_pass),
                              verify=False)
     if response.status_code not in (200, 201):
