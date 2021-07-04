@@ -1,19 +1,11 @@
 kind: Job
-apiVersion: apps/v1
+apiVersion: batch/v1
 metadata:
   name: stoq-transformer-oneoff
-  labels:
-    app: stoq-transformer-oneoff
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: stoq-transformer-oneoff
   template:
-    metadata:
-      labels:
-        app: stoq-transformer-oneoff
     spec:
+      restartPolicy: OnFailure
       volumes:
         - name: malware
           persistentVolumeClaim:
