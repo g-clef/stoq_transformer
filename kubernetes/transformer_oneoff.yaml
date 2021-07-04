@@ -1,18 +1,18 @@
-kind: Deployment
+kind: Job
 apiVersion: apps/v1
 metadata:
-  name: stoq-transformer
+  name: stoq-transformer-oneoff
   labels:
-    app: stoq-transformer
+    app: stoq-transformer-oneoff
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: stoq-transformer
+      app: stoq-transformer-oneoff
   template:
     metadata:
       labels:
-        app: stoq-transformer
+        app: stoq-transformer-oneoff
     spec:
       volumes:
         - name: malware
@@ -53,6 +53,6 @@ spec:
                   name: stoq-transformer-secrets
                   key: TRANSFORMERS
             - name: SCAN
-              value: "false"
+              value: "true"
       imagePullSecrets:
         - name: registrycreds

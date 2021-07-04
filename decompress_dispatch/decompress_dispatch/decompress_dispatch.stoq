@@ -1,0 +1,9 @@
+[Core]
+Name = decompress_dispatch
+Module = decompress_dispatch
+
+[Documentation]
+Author = Aaron Gee-Clough
+Version = 0.0.1
+Website = https://github.com/g-clef/stoq_transformer/decompress_dispatch
+Description = Dispatch files to decompressor if the file is an archive, to workers if not.

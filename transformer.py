@@ -13,7 +13,7 @@ def make_stoq(input_path):
     stoq_home = os.environ.get("STOQ_HOME", "/app")
     plugin_home = os.path.join(stoq_home, "plugins")
     providers = ["dirmon"]
-    workers = ["decompress"]
+    dispatchers = ["decompress_dispatch"]
     always_dispatch = ",".join(["EMBER_format_lief",
                                 "entropy",
                                 "hash",
@@ -33,6 +33,7 @@ def make_stoq(input_path):
     plugin_opts = {"dirmon": {"source_dir": input_path},
                    "decompress": {'passwords': "infected",
                                   "always_dispatch": always_dispatch},
+                   "decompress_dispatch": {"always_dispatch": always_dispatch},
                    "es-search": {"es_options": json.dumps({"http_auth": [es_username, es_password],
                                                            "verify_certs": False,
                                                            "use_ssl": True,
@@ -46,7 +47,7 @@ def make_stoq(input_path):
             plugin_dir_list=[plugin_home],
             providers=providers,
             connectors=connectors,
-            always_dispatch=workers,
+            dispatchers=dispatchers,
             plugin_opts=plugin_opts,
     )
     return s
@@ -136,8 +137,7 @@ transformer_map = {
 }
 
 
-def run():
-    # configure plugins and outputs here
+def get_transformers():
     transformers = list()
 
     workers = os.environ.get("TRANSFORMERS", "*")
@@ -148,10 +148,25 @@ def run():
         for worker in workers.split(","):
             if worker in transformer_map:
                 transformers.append(transformer_map[worker]())
-    loop = asyncio.get_event_loop()
+    return transformers
 
+
+def run():
+    # configure plugins and outputs here
+    transformers = get_transformers()
+    loop = asyncio.get_event_loop()
     loop.run_until_complete(asyncio.gather(*[transformer.run(request_meta=meta) for transformer, meta in transformers]))
 
 
+def scan():
+    transformers = get_transformers()
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(asyncio.gather(*[transformer.scan(request_meta=meta) for transformer, meta in transformers]))
+
+
 if __name__ == "__main__":
-    run()
+    one_off = os.environ.get("SCAN", "false").lower() == "true"
+    if one_off:
+        scan()
+    else:
+        run()
