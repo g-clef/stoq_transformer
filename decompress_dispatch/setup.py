@@ -7,5 +7,5 @@ setup(
     url="https://github.com/g-clef/stoq_transformer/decompress_dispatch",
     description="dispatch files to decompressor if the file is an archive, to workers if not.",
     packages=find_packages(),
-    package_data={'decompress_dispatch': ['decompress_dispatch']},
+    package_data={'decompress_dispatch': ['decompress_dispatch.stoq']},
 )
