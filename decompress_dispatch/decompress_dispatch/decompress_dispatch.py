@@ -1,8 +1,14 @@
 from typing import Optional
-from stoq.data_classes import Payload, DispatcherResponse, Request
+from stoq.data_classes import Payload, WorkerResponse, Request, PayloadMeta, ExtractedPayload
 from stoq.helpers import StoqConfigParser
-from stoq.plugins import DispatcherPlugin
+from stoq.plugins import WorkerPlugin
+"""
+Overview
+=======
+route an event based on its mime type. This acts like a dispatcher plugin, but has to be a worker, since
+only a worker can require a plugin to run before it does.
 
+"""
 # copied from the decompress plugin. If that changes to support more stuff, need to update this also.
 # note: handle dosexec a little differently since those could be a regular executable *or* a upx-packed one.
 # in that case, send it *both* ways.
@@ -40,20 +46,22 @@ SUPPORTED_ARCHIVE_TYPES = {
 DOUBLE_TYPES = {'application/x-dosexec'}
 
 
-class DecompressDispatcherPlugin(DispatcherPlugin):
+class DecompressDispatcherPlugin(WorkerPlugin):
     def __init__(self, config: StoqConfigParser):
         super().__init__(config)
         self.always_dispatch = config.getlist('options', 'always_dispatch', fallback=[])
+        self.required_workers.add("mimetype")
 
-    async def get_dispatches(
+    async def scan(
         self, payload: Payload, request: Request
-    ) -> Optional[DispatcherResponse]:
-        response = DispatcherResponse()
+    ) -> Optional[WorkerResponse]:
+        meta = PayloadMeta()
         mimetype = payload.results.workers['mimetype']['mimetype']
         if mimetype in SUPPORTED_ARCHIVE_TYPES:
-            response.plugin_names = ['decompress']
+            meta.dispatch_to = ["decompress"]
         elif mimetype in DOUBLE_TYPES:
-            response.plugin_names = self.always_dispatch + ["decompress"]
+            meta.dispatch_to = self.always_dispatch + ["decompress"]
         else:
-            response.plugin_names = self.always_dispatch
-        return response
+            meta.dispatch_to = self.always_dispatch
+        extracted = ExtractedPayload(payload.content, meta)
+        return WorkerResponse({}, extracted=[extracted])
