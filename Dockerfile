@@ -25,6 +25,7 @@ RUN stoq install --github stoq:es-search
 RUN stoq install --github stoq:decompress
 RUN stoq install EMBER_format_lief
 RUN stoq install --github stoq:entropy
+RUN stoq install --github stoq:filedir
 RUN stoq install --github stoq:hash
 RUN stoq install --github stoq:hash_ssdeep
 RUN stoq install lief
