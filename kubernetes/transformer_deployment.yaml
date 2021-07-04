@@ -52,7 +52,7 @@ spec:
                 secretKeyRef:
                   name: stoq-transformer-secrets
                   key: TRANSFORMERS
-            - name: SCAN
+            - name: PROCESS_ARCHIVE
               value: "false"
       imagePullSecrets:
         - name: registrycreds
