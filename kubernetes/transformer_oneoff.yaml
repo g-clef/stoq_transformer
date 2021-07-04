@@ -1,19 +1,11 @@
-kind: Deployment
-apiVersion: apps/v1
+kind: Job
+apiVersion: batch/v1
 metadata:
-  name: stoq-transformer
-  labels:
-    app: stoq-transformer
+  name: stoq-transformer-oneoff
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: stoq-transformer
   template:
-    metadata:
-      labels:
-        app: stoq-transformer
     spec:
+      restartPolicy: OnFailure
       volumes:
         - name: malware
           persistentVolumeClaim:
@@ -53,6 +45,6 @@ spec:
                   name: stoq-transformer-secrets
                   key: TRANSFORMERS
             - name: PROCESS_ARCHIVE
-              value: "false"
+              value: "true"
       imagePullSecrets:
         - name: registrycreds
