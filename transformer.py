@@ -13,7 +13,7 @@ def make_stoq(input_path):
     stoq_home = os.environ.get("STOQ_HOME", "/app")
     plugin_home = os.path.join(stoq_home, "plugins")
     providers = ["dirmon"]
-    dispatchers = ["decompress_dispatch"]
+    workers = ["decompress_dispatch"]
     always_dispatch = ",".join(["EMBER_format_lief",
                                 "entropy",
                                 "hash",
@@ -47,7 +47,7 @@ def make_stoq(input_path):
             plugin_dir_list=[plugin_home],
             providers=providers,
             connectors=connectors,
-            dispatchers=dispatchers,
+            always_dispatch=workers,
             plugin_opts=plugin_opts,
     )
     return s
