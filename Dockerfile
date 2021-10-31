@@ -13,7 +13,7 @@ COPY EMBER_format_lief/ /app/EMBER_format_lief
 COPY lief/ /app/lief
 COPY decompress_dispatch/ /app/decompress_dispatch
 
-RUN pip3 install malwaretl-stoq-transformer
+RUN pip3 install malwaretl-stoq-transformer==1.0.1
 
 ENV STOQ_HOME=/app
 
