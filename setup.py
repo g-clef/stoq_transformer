@@ -1,6 +1,6 @@
 import setuptools
 
-with open("README", "r") as fh:
+with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
@@ -15,10 +15,10 @@ setuptools.setup(
     project_urls={
             "Bug Tracker": "https://github.com/g-clef/stoq_transformer/issues",
         },
-    packages=setuptools.find_packages(),
+    packages=setuptools.find_packages(where="."),
     classifiers=[
         "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: Apache License",
+        "License :: OSI Approved :: Apache Software License",
         "Operating System :: OS Independent",
     ],
     python_requires='>=3.6',
