@@ -8,14 +8,12 @@ RUN mkdir /app
 RUN mkdir /app/plugins
 WORKDIR /app
 
-ADD transformer.py /app
-
 ADD requirements.txt /app
 COPY EMBER_format_lief/ /app/EMBER_format_lief
 COPY lief/ /app/lief
 COPY decompress_dispatch/ /app/decompress_dispatch
 
-RUN pip3 install -r /app/requirements.txt
+RUN pip3 install malwaretl-stoq-transformer==1.0.1
 
 ENV STOQ_HOME=/app
 
@@ -38,5 +36,3 @@ RUN stoq install --github stoq:stdout
 RUN stoq install --github stoq:symhash
 RUN stoq install --github stoq:xdpcarve
 RUN stoq install --github stoq:xyz
-
-CMD ["python3", "/app/transformer.py"]

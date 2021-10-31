@@ -1,12 +1,16 @@
 from typing import Optional
-from stoq.data_classes import Payload, WorkerResponse, Request, PayloadMeta, ExtractedPayload
+from stoq.data_classes import Payload, DispatcherResponse, Request, PayloadMeta, ExtractedPayload
 from stoq.helpers import StoqConfigParser
-from stoq.plugins import WorkerPlugin
+from stoq.plugins import DispatcherPlugin
+from stoq.exceptions import StoqPluginException
+
+import magic
+
 """
 Overview
 =======
-route an event based on its mime type. This acts like a dispatcher plugin, but has to be a worker, since
-only a worker can require a plugin to run before it does.
+route an event based on its mime type. This hack-copies parts of decompress and parts of mimetype, to allow it
+to make decisions based on the mime type of the file.
 
 """
 # copied from the decompress plugin. If that changes to support more stuff, need to update this also.
@@ -45,23 +49,42 @@ SUPPORTED_ARCHIVE_TYPES = {
 
 DOUBLE_TYPES = {'application/x-dosexec'}
 
+if hasattr(magic.Magic, 'from_buffer'):
+    USE_PYTHON_MAGIC = True
+else:
+    USE_PYTHON_MAGIC = False
 
-class DecompressDispatcherPlugin(WorkerPlugin):
+
+class DecompressDispatcherPlugin(DispatcherPlugin):
     def __init__(self, config: StoqConfigParser):
         super().__init__(config)
         self.always_dispatch = config.getlist('options', 'always_dispatch', fallback=[])
-        self.required_workers.add("mimetype")
 
-    async def scan(
-        self, payload: Payload, request: Request
-    ) -> Optional[WorkerResponse]:
-        meta = PayloadMeta()
-        mimetype = payload.results.workers['mimetype']['mimetype']
-        if mimetype in SUPPORTED_ARCHIVE_TYPES:
-            meta.dispatch_to = ["decompress"]
-        elif mimetype in DOUBLE_TYPES:
-            meta.dispatch_to = self.always_dispatch + ["decompress"]
+    @staticmethod
+    def get_mimetype(payload):
+        if USE_PYTHON_MAGIC:
+            magic_scan = magic.Magic(mime=True)
+            magic_result = magic_scan.from_buffer(payload.content[0:1000])
         else:
-            meta.dispatch_to = self.always_dispatch
-        extracted = ExtractedPayload(payload.content, meta)
-        return WorkerResponse({}, extracted=[extracted])
+            with magic.Magic(flags=magic.MAGIC_MIME_TYPE) as m:
+                magic_result = m.id_buffer(payload.content[0:1000])
+        if hasattr(magic_result, 'decode'):
+            magic_result = magic_result.decode('utf-8')
+        return magic_result
+
+    async def get_dispatches(
+        self, payload: Payload, request: Request
+    ) -> Optional[DispatcherResponse]:
+        response = DispatcherResponse()
+        mimetype = self.get_mimetype(payload)
+        if mimetype in SUPPORTED_ARCHIVE_TYPES:
+            response.plugin_names.append("decompress")
+            response.meta = {"dispatch_status": "archive file, sending to decompress only"}
+        elif mimetype in DOUBLE_TYPES:
+            response.plugin_names.extend(self.always_dispatch)
+            response.plugin_names.append("decompress")
+            response.meta = {"dispatch_status": "possible dual-type file. Sending to plugins and decompress"}
+        else:
+            response.plugin_names.extend(self.always_dispatch)
+            response.meta = {"dispatch_status": "not archive file, sending to analysis"}
+        return response
