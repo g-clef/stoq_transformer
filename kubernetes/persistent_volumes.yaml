@@ -11,8 +11,8 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: stoq-raw-malware
   mountOptions:
-    - dir_mode=0777
-    - file_mode=0777
+    - dir_mode=0444
+    - file_mode=0444
     - vers=3.0
   csi:
     driver: smb.csi.k8s.io

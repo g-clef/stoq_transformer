@@ -38,5 +38,3 @@ RUN stoq install --github stoq:stdout
 RUN stoq install --github stoq:symhash
 RUN stoq install --github stoq:xdpcarve
 RUN stoq install --github stoq:xyz
-
-CMD ["python3", "/app/transformer.py"]
