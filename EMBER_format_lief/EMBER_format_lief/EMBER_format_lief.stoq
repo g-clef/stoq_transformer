@@ -4,6 +4,6 @@ Module = EMBER_format_lief
 
 [Documentation]
 Author = Aaron Gee-Clough
-Version = 0.0.1
+Version = 0.0.2
 Website = https://github.com/g-clef/stoq_transformer/EMBER_format_lief
 Description = Parse and abstract PE, ELF and MachO files using LIEF matching the EMBER dataset format
