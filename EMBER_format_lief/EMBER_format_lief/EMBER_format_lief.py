@@ -37,7 +37,7 @@ class LiefPlugin(WorkerPlugin):
         lief_info = {
             'size': len(payload.content),
             'vsize': lief_obj.virtual_size,
-            'has_debug': int(lief_obj.has_debug),
+            'has_debug': int(getattr(lief_obj, "has_debug", 0)),
             'exports': len(lief_obj.exported_functions),
             'imports': len(lief_obj.imported_functions),
             'has_relocations': int(lief_obj.has_relocations),
