@@ -1,2 +1,2 @@
 stoq-framework
-lief
+lief==0.10.1
