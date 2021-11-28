@@ -12,8 +12,9 @@ ADD requirements.txt /app
 COPY EMBER_format_lief/ /app/EMBER_format_lief
 COPY lief/ /app/lief
 COPY decompress_dispatch/ /app/decompress_dispatch
+RUN pip3 install scikit-build cmake ninja
 
-RUN pip3 install malwaretl-stoq-transformer==1.0.2
+RUN pip3 install malwaretl-stoq-transformer==1.0.3
 
 ENV STOQ_HOME=/app
 
