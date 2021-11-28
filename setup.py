@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="malwaretl_stoq_transformer",
-    version="1.0.1",
+    version="1.0.3",
     author="Aaron Gee-Clough",
     author_email="aaron@g-clef.net",
     description="Helper class to build Stoq instances for use in MalwareETL pipelines",
@@ -22,5 +22,5 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     python_requires='>=3.6',
-    install_requires=["stoq-framework", "lief==0.10.1"]
+    install_requires=["stoq-framework", "lief==0.11.5"]
 )
