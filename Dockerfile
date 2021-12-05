@@ -20,7 +20,7 @@ ENV STOQ_HOME=/app
 
 RUN stoq install decompress_dispatch
 RUN stoq install --github stoq:dirmon
-RUN stoq install --github stoq:es-search
+RUN stoq install es-search
 RUN stoq install --github stoq:decompress
 RUN stoq install EMBER_format_lief
 RUN stoq install --github stoq:entropy
