@@ -44,11 +44,11 @@ class LiefPlugin(WorkerPlugin):
             'has_resources': int(getattr(lief_obj, "has_resources", 0)),
             'has_signature': int(getattr(lief_obj, "has_signature", 0)),
             'has_tls': int(getattr(lief_obj, "has_tls", 0)),
-            'symbols': len(lief_obj.symbols),
+            'symbols': len(getattr(lief_obj, "symbols", [])),
             'coff': {
                 'timestamp': getattr(lief_obj.header, "time_date_stamps", ""),
-                'machine': str(lief_obj.header.machine).split('.')[-1],
-                'characteristics': [str(c).split('.')[-1] for c in lief_obj.header.characteristics_list]
+                'machine': str(getattr(lief_obj.header, "machine", "")).split('.')[-1],
+                'characteristics': [str(c).split('.')[-1] for c in getattr(lief_obj.header, "characteristics_list", [])]
             },
         }
         if hasattr(lief_obj, "optional_header"):
