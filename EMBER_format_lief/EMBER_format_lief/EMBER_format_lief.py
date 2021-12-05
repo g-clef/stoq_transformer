@@ -46,28 +46,29 @@ class LiefPlugin(WorkerPlugin):
             'has_tls': int(getattr(lief_obj, "has_tls", 0)),
             'symbols': len(lief_obj.symbols),
             'coff': {
-                'timestamp': lief_obj.header.time_date_stamps,
+                'timestamp': getattr(lief_obj.header, "time_date_stamps", ""),
                 'machine': str(lief_obj.header.machine).split('.')[-1],
                 'characteristics': [str(c).split('.')[-1] for c in lief_obj.header.characteristics_list]
             },
-            "optional": {
+        }
+        if hasattr(lief_obj, "optional_header"):
+            lief_info["optional"] = {
                 'subsystem': str(lief_obj.optional_header.subsystem).split('.')[-1],
                 'dll_characteristics': [
                     str(c).split('.')[-1] for c in lief_obj.optional_header.dll_characteristics_lists
                 ],
                 'magic': str(lief_obj.optional_header.magic).split('.')[-1],
-                'major_image_version': lief_obj.optional_header.major_image_version,
-                'minor_image_version': lief_obj.optional_header.minor_image_version,
-                'major_linker_version': lief_obj.optional_header.major_linker_version,
-                'minor_linker_version': lief_obj.optional_header.minor_linker_version,
-                'major_operating_system_version': lief_obj.optional_header.major_operating_system_version,
-                'minor_operating_system_version': lief_obj.optional_header.minor_operating_system_version,
-                'major_subsystem_version': lief_obj.optional_header.major_subsystem_version,
-                'minor_subsystem_version': lief_obj.optional_header.minor_subsystem_version,
-                'sizeof_code': lief_obj.optional_header.sizeof_code,
-                'sizeof_headers': lief_obj.optional_header.sizeof_headers,
-                'sizeof_heap_commit': lief_obj.optional_header.sizeof_heap_commit
+                'major_image_version': getattr(lief_obj.optional_header, "major_image_version", ""),
+                'minor_image_version': getattr(lief_obj.optional_header, "minor_image_version", ""),
+                'major_linker_version': getattr(lief_obj.optional_header, "major_linker_version", ""),
+                'minor_linker_version': getattr(lief_obj.optional_header, "minor_linker_version", ""),
+                'major_operating_system_version': getattr(lief_obj.optional_header, "major_operating_system_version"),
+                'minor_operating_system_version': getattr(lief_obj.optional_header, "minor_operating_system_version"),
+                'major_subsystem_version': getattr(lief_obj.optional_header, "major_subsystem_version"),
+                'minor_subsystem_version': getattr(lief_obj.optional_header, "minor_subsystem_version"),
+                'sizeof_code': getattr(lief_obj.optional_header, "sizeof_code"),
+                'sizeof_headers': getattr(lief_obj.optional_header, "sizeof_headers", ""),
+                'sizeof_heap_commit': getattr(lief_obj.optional_header, "sizeof_heap_commit", "")
             }
-        }
 
         return WorkerResponse(lief_info)
