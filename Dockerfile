@@ -14,7 +14,7 @@ COPY lief/ /app/lief
 COPY decompress_dispatch/ /app/decompress_dispatch
 RUN pip3 install scikit-build cmake ninja
 
-RUN pip3 install malwaretl-stoq-transformer==1.0.3
+RUN pip3 install malwaretl-stoq-transformer==1.0.4
 
 ENV STOQ_HOME=/app
 
