@@ -12,6 +12,7 @@ ADD requirements.txt /app
 COPY EMBER_format_lief/ /app/EMBER_format_lief
 COPY lief/ /app/lief
 COPY decompress_dispatch/ /app/decompress_dispatch
+COPY es-search/ /app/es-search
 RUN pip3 install scikit-build cmake ninja
 
 RUN pip3 install malwaretl-stoq-transformer==1.0.4
