@@ -53,11 +53,11 @@ class LiefPlugin(WorkerPlugin):
         }
         if hasattr(lief_obj, "optional_header"):
             lief_info["optional"] = {
-                'subsystem': str(lief_obj.optional_header.subsystem).split('.')[-1],
+                'subsystem': str(getattr(lief_obj.optional_header, "subsystem", "")).split('.')[-1],
                 'dll_characteristics': [
-                    str(c).split('.')[-1] for c in lief_obj.optional_header.dll_characteristics_lists
+                    str(c).split('.')[-1] for c in getattr(lief_obj.optional_header, "dll_characteristics_lists", [])
                 ],
-                'magic': str(lief_obj.optional_header.magic).split('.')[-1],
+                'magic': str(getattr(lief_obj.optional_header, "magic", "")).split('.')[-1],
                 'major_image_version': getattr(lief_obj.optional_header, "major_image_version", ""),
                 'minor_image_version': getattr(lief_obj.optional_header, "minor_image_version", ""),
                 'major_linker_version': getattr(lief_obj.optional_header, "major_linker_version", ""),
