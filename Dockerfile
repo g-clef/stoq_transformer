@@ -12,6 +12,7 @@ ADD requirements.txt /app
 COPY EMBER_format_lief/ /app/EMBER_format_lief
 COPY lief/ /app/lief
 COPY decompress_dispatch/ /app/decompress_dispatch
+COPY es-search/ /app/es-search
 RUN pip3 install scikit-build cmake ninja
 
 RUN pip3 install malwaretl-stoq-transformer==1.0.4
@@ -20,7 +21,7 @@ ENV STOQ_HOME=/app
 
 RUN stoq install decompress_dispatch
 RUN stoq install --github stoq:dirmon
-RUN stoq install --github stoq:es-search
+RUN stoq install es-search
 RUN stoq install --github stoq:decompress
 RUN stoq install EMBER_format_lief
 RUN stoq install --github stoq:entropy
