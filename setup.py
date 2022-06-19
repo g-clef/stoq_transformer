@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="malwaretl_stoq_transformer",
-    version="1.0.4",
+    version="1.0.5",
     author="Aaron Gee-Clough",
     author_email="aaron@g-clef.net",
     description="Helper class to build Stoq instances for use in MalwareETL pipelines",
