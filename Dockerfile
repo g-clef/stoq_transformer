@@ -10,7 +10,6 @@ WORKDIR /app
 
 ADD requirements.txt /app
 COPY EMBER_format_lief/ /app/EMBER_format_lief
-COPY lief/ /app/lief
 COPY decompress_dispatch/ /app/decompress_dispatch
 COPY es-search/ /app/es-search
 RUN pip3 install scikit-build cmake ninja
@@ -28,7 +27,6 @@ RUN stoq install --github stoq:entropy
 RUN stoq install --github stoq:filedir
 RUN stoq install --github stoq:hash
 RUN stoq install --github stoq:hash_ssdeep
-RUN stoq install lief
 RUN stoq install --github stoq:mimetype
 RUN stoq install --github stoq:mraptor
 RUN stoq install --github stoq:ole
