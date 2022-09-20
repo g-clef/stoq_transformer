@@ -22,5 +22,5 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     python_requires='>=3.6',
-    install_requires=["stoq-framework", "lief==0.11.5"]
+    install_requires=["stoq-framework", "lief==0.12.1"]
 )
